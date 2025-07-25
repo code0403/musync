@@ -1,28 +1,19 @@
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react';
-import { Button } from './components/ui/button';
+import { Route, Routes } from 'react-router';
+import HomePage from './pages/home/HomePage';
+import AuthCallback from './pages/auth-callback/AuthCallback';
+import { AuthenticateWithRedirectCallback } from '@clerk/clerk-react';
+
 
 const App = () => {
+  
   return (
-    <div className='text-red-500'>
-      <h1 className='text-5xl text-bolder'>Hello</h1>
-
-      <Button variant={"destructive"}>This is a button from Schdn Ui</Button>
-
-
-      <header>
-
-        <SignedOut>
-          <SignInButton>
-            <Button variant={"default"}>SignIn</Button>
-          </SignInButton>
-        </SignedOut>
-
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
-
-      </header>
-    </div>
+    <>
+    <Routes>
+      <Route path='/' element = {<HomePage />} />
+      <Route path='sso-callback' element = {<AuthenticateWithRedirectCallback signUpForceRedirectUrl={"/auth-callback"} />} />
+      <Route path='/auth-callback' element = {<AuthCallback />} />
+    </Routes>
+    </>
   )
 }
 

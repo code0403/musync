@@ -2,6 +2,7 @@ import express from "express";
 import path from "path";
 import { clerkMiddleware } from "@clerk/express";
 import fileUpload from "express-fileupload";
+import cors from "cors"
 
 import userRoutes from "./routes/user.route.js";
 import authRoutes from "./routes/auth.routes.js";
@@ -18,6 +19,13 @@ const app = express();
 const __dirname = path.resolve();
 
 const PORT = process.env.PORT;
+
+app.use(cors(
+  {
+    origin : "http://localhost:3000",
+    credentials : true,
+  }
+))
 
 app.use(express.json());
 
