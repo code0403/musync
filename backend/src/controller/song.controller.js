@@ -17,7 +17,7 @@ export const getFeaturedSongs = async (req, res, next) => {
         $sample: { size: 6 },
       },
       {
-        $projects: {
+        $project: {
             _id : 1,
             title : 1,
             artist : 1,
@@ -42,7 +42,7 @@ export const getMadeForYouSongs = async (req, res, next) => {
         $sample: { size: 4 },
       },
       {
-        $projects: {
+        $project: {
             _id : 1,
             title : 1,
             artist : 1,
@@ -67,7 +67,7 @@ export const getTrendingSongs = async (req, res, next) => {
         $sample: { size: 4 },
       },
       {
-        $projects: {
+        $project: {
             _id : 1,
             title : 1,
             artist : 1,

@@ -1,6 +1,5 @@
 import { useSignIn } from '@clerk/clerk-react';
 import { Button } from './ui/button';
-import { RectangleGogglesIcon } from 'lucide-react';
 
 const SignInOAuthButtons = () => {
     const { signIn, isLoaded } = useSignIn();
@@ -17,7 +16,7 @@ const SignInOAuthButtons = () => {
 
   return (
       <Button onClick={signInWithGoogle} variant={"secondary"} className='w-full text-white border-zinc-200 h-11'>
-        <RectangleGogglesIcon />
+        <img src='/google.png' alt='Google Logo' className='mr-2 w-6 h-6' />
         Continue with Google
       </Button>
   )

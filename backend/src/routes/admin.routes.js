@@ -7,7 +7,7 @@ const router = Router();
 // this will make that - it will used for all the endpoints in the file
 router.use(protectRoute, requireAdmin)
 
-router.get("check-admin", checkAdmin) //check is the user is admin or not
+router.get("/check-admin", checkAdmin) //check is the user is admin or not
 
 router.post("/songs", createSong)
 router.delete("/songs/:id", deleteSong)
