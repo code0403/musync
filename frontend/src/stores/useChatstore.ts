@@ -18,7 +18,7 @@ export const useChatStore = create<ChatStore>((set) => ({
         set({isLoading : true, error : null});
         try {
             const response = await axiosInstance.get('/users');
-            console.log(response.data);
+            // console.log(response.data);
             set({users : response.data});
         } catch (error : unknown) {
             let errorMessage = "Unknown error";

@@ -4,12 +4,12 @@ import { cn } from '@/lib/utils'
 import PlaylistSkeleton from '@/skeletons/PlaylistSkeleton'
 import useMusicStore from '@/stores/useMusicStore'
 import { SignedIn } from '@clerk/clerk-react'
-import { HomeIcon, Library, MessageCircleIcon } from 'lucide-react'
+import { FileMusic, HomeIcon, Library, MessageCircleIcon } from 'lucide-react'
 import { useEffect } from 'react'
 import { Link } from 'react-router'
 
 const LeftSidebar = () => {
-    const { isLoading, songs, albums, fetchAlbums } = useMusicStore();
+    const { isLoading, albums, fetchAlbums } = useMusicStore();
 
     useEffect(()=>{
         fetchAlbums()
@@ -44,6 +44,20 @@ const LeftSidebar = () => {
                             <span className='hidden md:inline'>Messages</span>
                         </Link>
                     </SignedIn>
+
+                    <SignedIn>
+                        <Link to={"/create-playlist"} className={cn(
+                            buttonVariants(
+                                {
+                                    variant: "ghost",
+                                    className: "w-full justify-start text-white hover:bg-zinc-800, "
+                                })
+                        )}>
+                            <FileMusic className='mr-2 size-5' />
+                            <span className='hidden md:inline'>Create Your Playlist</span>
+                            {/* TODO:  ADD Backend and frontend logic for creating playlist */}
+                        </Link>
+                    </SignedIn>
                 </div>
             </div>
 
@@ -56,7 +70,7 @@ const LeftSidebar = () => {
                     </div>
                 </div>
 
-                <ScrollArea className='h-[calc(100vh-300px)]'>
+                <ScrollArea className='h-[calc(90vh-300px)]'>
                     <div className='space-y-2'>
                         {
                             isLoading ? (

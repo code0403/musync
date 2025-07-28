@@ -17,12 +17,12 @@ const uploadToCloudinary = async (file) => {
 
 export const createSong = async (req, res, next) => {
   try {
-    if (!req.files || req.files.audioFile || !req.files.imageFile) {
+    if (!req.files || !req.files.audioFile || !req.files.imageFile) {
       return res.status(400).json({ message: "Please upload all the files." });
     }
 
     const { title, artist, albumId, duration } = req.body;
-    const audioFile = req.body.audioFile;
+    const audioFile = req.files.audioFile;
     const imageFile = req.files.imageFile;
 
     const audioUrl = await uploadToCloudinary(audioFile);
@@ -43,6 +43,7 @@ export const createSong = async (req, res, next) => {
     if (albumId) {
       await Album.findByIdAndUpdate(albumId, { $push: { songs: song._id } });
     }
+    res.status(201).json(song); // <-- send a response!
   } catch (error) {
     console.log(`Error in createSong`, error);
     next(error);
