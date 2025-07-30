@@ -25,6 +25,9 @@ const __dirname = path.resolve();
 
 const PORT = process.env.PORT;
 
+console.log("NODE_ENV:", process.env.NODE_ENV);
+console.log("Serving frontend from:", path.join(__dirname, "../frontend/dist"));
+
 const httpServer = createServer(app);
 intializeSocket(httpServer);
 
@@ -112,10 +115,20 @@ cron.schedule("0 0 0 * * *", () => {
 //   console.log("Error mounting /api/stats:", error);
 // }
 
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static(path.join(__dirname, "../frontend/dist")));
+//   app.get("/*", (req, res) => {
+//     res.sendFile(path.resolve(__dirname, "../frontend", "dist", "index.html"));
+//   });
+// }
+
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
-  app.get("/*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../frontend", "dist", "index.html"));
+  const clientBuildPath = path.join(__dirname, "../frontend/dist");
+
+  app.use(express.static(clientBuildPath));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(clientBuildPath, "index.html"));
   });
 }
 
