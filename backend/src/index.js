@@ -37,10 +37,10 @@ app.use(cors(
 
 app.use(express.json());
 
-app.use(clerkMiddleware({
-  secretKey: process.env.CLERK_SECRET_KEY,
-  publishableKey: process.env.CLERK_PUBLISHABLE_KEY,
-}));
+// app.use(clerkMiddleware({
+//   secretKey: process.env.CLERK_SECRET_KEY,
+//   publishableKey: process.env.CLERK_PUBLISHABLE_KEY,
+// }));
 
 app.use(
   fileUpload({
@@ -71,12 +71,27 @@ cron.schedule("0 0 0 * * *", () => {
   }
 });
 
+try {
+  console.log("Mounting /api/users...");
 app.use("/api/users", userRoutes);
+
+console.log("Mounting /api/auth...");
 app.use("/api/auth", authRoutes);
+
+console.log("Mounting /api/admin...");
 app.use("/api/admin", adminRoutes);
+
+console.log("Mounting /api/songs...");
 app.use("/api/songs", songRoutes);
+
+console.log("Mounting /api/albums...");
 app.use("/api/albums", albumRoutes);
+
+console.log("Mounting /api/stats...");
 app.use("/api/stats", statRoutes);
+} catch (error) {
+  console.log("ROUTE ERROR", error);
+}
 
 if(process.env.NODE_ENV === "production"){
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
@@ -84,6 +99,12 @@ if(process.env.NODE_ENV === "production"){
     res.sendFile(path.resolve(__dirname, "../frontend", "dist", "index.html"));
   });
 }
+
+app._router.stack.forEach((r) => {
+  if (r.route && r.route.path) {
+    console.log("Registered route:", r.route.path);
+  }
+});
 
 app.use((err, req, res, next) => {
   res
