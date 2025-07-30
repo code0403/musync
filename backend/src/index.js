@@ -70,47 +70,47 @@ cron.schedule("0 0 0 * * *", () => {
   }
 });
 
-try {
-  console.log("Mounting /api/users...");
-  app.use("/api/users", userRoutes);
-} catch (error) {
-  console.log("Error mounting /api/users:", error);
-}
+// try {
+//   console.log("Mounting /api/users...");
+//   app.use("/api/users", userRoutes);
+// } catch (error) {
+//   console.log("Error mounting /api/users:", error);
+// }
 
-try {
-  console.log("Mounting /api/auth...");
-  app.use("/api/auth", authRoutes);
-} catch (error) {
-  console.log("Error mounting /api/auth:", error);
-}
+// try {
+//   console.log("Mounting /api/auth...");
+//   app.use("/api/auth", authRoutes);
+// } catch (error) {
+//   console.log("Error mounting /api/auth:", error);
+// }
 
-try {
-  console.log("Mounting /api/admin...");
-  app.use("/api/admin", adminRoutes);
-} catch (error) {
-  console.log("Error mounting /api/admin:", error);
-}
+// try {
+//   console.log("Mounting /api/admin...");
+//   app.use("/api/admin", adminRoutes);
+// } catch (error) {
+//   console.log("Error mounting /api/admin:", error);
+// }
 
-try {
-  console.log("Mounting /api/songs...");
-  app.use("/api/songs", songRoutes);
-} catch (error) {
-  console.log("Error mounting /api/songs:", error);
-}
+// try {
+//   console.log("Mounting /api/songs...");
+//   app.use("/api/songs", songRoutes);
+// } catch (error) {
+//   console.log("Error mounting /api/songs:", error);
+// }
 
-try {
-  console.log("Mounting /api/albums...");
-  app.use("/api/albums", albumRoutes);
-} catch (error) {
-  console.log("Error mounting /api/albums:", error);
-}
+// try {
+//   console.log("Mounting /api/albums...");
+//   app.use("/api/albums", albumRoutes);
+// } catch (error) {
+//   console.log("Error mounting /api/albums:", error);
+// }
 
-try {
-  console.log("Mounting /api/stats...");
-  app.use("/api/stats", statRoutes);
-} catch (error) {
-  console.log("Error mounting /api/stats:", error);
-}
+// try {
+//   console.log("Mounting /api/stats...");
+//   app.use("/api/stats", statRoutes);
+// } catch (error) {
+//   console.log("Error mounting /api/stats:", error);
+// }
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
