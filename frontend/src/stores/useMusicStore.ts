@@ -4,8 +4,8 @@ import toast from 'react-hot-toast';
 import { create } from 'zustand';
 
 interface MusicStore {
-    albums: Song[];
-    songs: Album[];
+    albums: Album[];
+    songs: Song[];
     isLoading: boolean;
     error: string | null;
     currentAlbum: Album | null;
