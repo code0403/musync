@@ -4,8 +4,9 @@ import { clerkMiddleware } from "@clerk/express";
 import fileUpload from "express-fileupload";
 import cors from "cors"
 import { createServer } from "http";
+import fs from "fs";
 import { intializeSocket } from "./lib/socket.js";
-
+import cron from "node-cron";
 
 import userRoutes from "./routes/user.route.js";
 import authRoutes from "./routes/auth.routes.js";
@@ -47,6 +48,25 @@ app.use(
     },
   })
 );
+
+
+// Cron Jobs for deleting old files from the tmp files
+const tempDir = path.join(process.cwd(), "tmp");
+cron.schedule("0 0 0 * * *", () => {
+  console.log("running a task every day");
+
+  if(fs.existsSync(tempDir)){
+    fs.readdir(tempDir, (err, files) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      for (const file of files){
+        fs.unlink(path.join(tempDir, file), (err) => {})
+      }
+    })
+  }
+});
 
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
