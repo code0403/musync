@@ -7,12 +7,12 @@ import { useEffect } from "react";
 
 
 const FriendsActivity = () => {
-    const { users, isLoading, error, fetchUsers } = useChatStore();
+    const { users, fetchUsers, userActivities, onlineUsers } = useChatStore();
     // console.log(users);
 
     const { user } = useUser();
 
-    const isPlaying = true;
+    // const isPlaying = true;
 
     useEffect(()=> {
         if(user) {
@@ -34,7 +34,7 @@ const FriendsActivity = () => {
                 <div className='p-4 space-y-4'>
                     {users.map((user) => {
                         const activity = userActivities.get(user.clerkId);
-                        // const isPlaying = activity && activity !== "Idle";
+                        const isPlaying = activity && activity !== "Idle";
 
                         return (
                             <div
@@ -64,10 +64,10 @@ const FriendsActivity = () => {
                                         {isPlaying ? (
                                             <div className='mt-1'>
                                                 <div className='mt-1 text-sm text-white font-medium truncate'>
-                                                    {activity.replace("Playing ", "").split(" by ")[0]}
+                                                    {activity ? activity.replace("Playing ", "").split(" by ")[0] : ""}
                                                 </div>
                                                 <div className='text-xs text-zinc-400 truncate'>
-                                                    {activity.split(" by ")[1]}
+                                                    {activity ? activity.split(" by ")[1] : ""}
                                                 </div>
                                             </div>
                                         ) : (

@@ -3,6 +3,9 @@ import path from "path";
 import { clerkMiddleware } from "@clerk/express";
 import fileUpload from "express-fileupload";
 import cors from "cors"
+import { createServer } from "http";
+import { intializeSocket } from "./lib/socket.js";
+
 
 import userRoutes from "./routes/user.route.js";
 import authRoutes from "./routes/auth.routes.js";
@@ -13,12 +16,16 @@ import statRoutes from "./routes/stat.routes.js";
 import { connectionDB } from "./config/db.js";
 
 import dotenv from "dotenv";
+
 dotenv.config();
 
 const app = express();
 const __dirname = path.resolve();
 
 const PORT = process.env.PORT;
+
+const httpServer = createServer(app);
+intializeSocket(httpServer);
 
 app.use(cors(
   {
@@ -59,11 +66,9 @@ app.use((err, req, res, next) => {
     });
 });
 
-app.listen(5000, () => {
+httpServer.listen(5000, () => {
   connectionDB();
   console.log(`server is running at ${PORT}`);
 });
 
-// todo : socket.io
 
-//  start with forntend - 2:00:00

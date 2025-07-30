@@ -9,7 +9,7 @@ const AudioPlayer = () => {
 
     // to handle play/pause logic
     useEffect(() => {
-        console.log("isPlaying changed", isPlaying);
+        // console.log("isPlaying changed", isPlaying);
         if (isPlaying) audioRef.current?.play();
         else audioRef.current?.pause();
     }, [isPlaying]);
@@ -20,7 +20,7 @@ const AudioPlayer = () => {
         const audio = audioRef.current;
 
         const handleEnded = () => {
-            console.log("song ended, play next song");
+            // console.log("song ended, play next song");
             playNext()
         }
 
@@ -34,7 +34,7 @@ const AudioPlayer = () => {
 
     // handle song changes
     useEffect(() => {
-        console.log("current song changed", currentSong);
+        // console.log("current song changed", currentSong);
         if (!audioRef.current || !currentSong) return;
         const audio = audioRef.current;
 
@@ -42,7 +42,7 @@ const AudioPlayer = () => {
         const isSongChange = prevSongRef.current !== currentSong?.audioUrl;
 
         if (isSongChange) {
-            console.log("Setting audio src to", currentSong?.audioUrl);
+            // console.log("Setting audio src to", currentSong?.audioUrl);
             audio.src = currentSong?.audioUrl || "";
 
             // reset the playlist position

@@ -17,7 +17,7 @@ export const authCallback = async (req, res, next) => {
       { clerkId: id },
       {
         $set: {
-          fullName: `${firstName} ${lastName}`,
+          fullName: `${firstName || ""} ${lastName || ""}`.trim(),
           imageUrl,
         },
       },

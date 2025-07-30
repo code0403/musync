@@ -39,7 +39,7 @@ const PlaybackControls = () => {
 
         audio.addEventListener('ended', handleEnded);
 
-        console.log("currentTime, duration", currentTime, duration);
+        // console.log("currentTime, duration", currentTime, duration);
 
 
         return () => {
