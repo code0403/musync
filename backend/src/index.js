@@ -2,7 +2,7 @@ import express from "express";
 import path from "path";
 import { clerkMiddleware } from "@clerk/express";
 import fileUpload from "express-fileupload";
-import cors from "cors"
+import cors from "cors";
 import { createServer } from "http";
 import fs from "fs";
 import { intializeSocket } from "./lib/socket.js";
@@ -28,19 +28,19 @@ const PORT = process.env.PORT;
 const httpServer = createServer(app);
 intializeSocket(httpServer);
 
-app.use(cors(
-  {
-    origin : "http://localhost:3000",
-    credentials : true,
-  }
-))
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 
-// app.use(clerkMiddleware({
-//   secretKey: process.env.CLERK_SECRET_KEY,
-//   publishableKey: process.env.CLERK_PUBLISHABLE_KEY,
-// }));
+app.use(clerkMiddleware({
+  secretKey: process.env.CLERK_SECRET_KEY,
+  publishableKey: process.env.CLERK_PUBLISHABLE_KEY,
+}));
 
 app.use(
   fileUpload({
@@ -52,74 +52,83 @@ app.use(
   })
 );
 
-
 // Cron Jobs for deleting old files from the tmp files
 const tempDir = path.join(process.cwd(), "tmp");
 cron.schedule("0 0 0 * * *", () => {
   console.log("running a task every day");
 
-  if(fs.existsSync(tempDir)){
+  if (fs.existsSync(tempDir)) {
     fs.readdir(tempDir, (err, files) => {
       if (err) {
         console.error(err);
         return;
       }
-      for (const file of files){
-        fs.unlink(path.join(tempDir, file), (err) => {})
+      for (const file of files) {
+        fs.unlink(path.join(tempDir, file), (err) => {});
       }
-    })
+    });
   }
 });
 
 try {
   console.log("Mounting /api/users...");
-app.use("/api/users", userRoutes);
-
-console.log("Mounting /api/auth...");
-app.use("/api/auth", authRoutes);
-
-console.log("Mounting /api/admin...");
-app.use("/api/admin", adminRoutes);
-
-console.log("Mounting /api/songs...");
-app.use("/api/songs", songRoutes);
-
-console.log("Mounting /api/albums...");
-app.use("/api/albums", albumRoutes);
-
-console.log("Mounting /api/stats...");
-app.use("/api/stats", statRoutes);
+  app.use("/api/users", userRoutes);
 } catch (error) {
-  console.log("ROUTE ERROR", error);
+  console.log("Error mounting /api/users:", error);
 }
 
-if(process.env.NODE_ENV === "production"){
+try {
+  console.log("Mounting /api/auth...");
+  app.use("/api/auth", authRoutes);
+} catch (error) {
+  console.log("Error mounting /api/auth:", error);
+}
+
+try {
+  console.log("Mounting /api/admin...");
+  app.use("/api/admin", adminRoutes);
+} catch (error) {
+  console.log("Error mounting /api/admin:", error);
+}
+
+try {
+  console.log("Mounting /api/songs...");
+  app.use("/api/songs", songRoutes);
+} catch (error) {
+  console.log("Error mounting /api/songs:", error);
+}
+
+try {
+  console.log("Mounting /api/albums...");
+  app.use("/api/albums", albumRoutes);
+} catch (error) {
+  console.log("Error mounting /api/albums:", error);
+}
+
+try {
+  console.log("Mounting /api/stats...");
+  app.use("/api/stats", statRoutes);
+} catch (error) {
+  console.log("Error mounting /api/stats:", error);
+}
+
+if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
   app.get("/*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "../frontend", "dist", "index.html"));
   });
 }
 
-app._router.stack.forEach((r) => {
-  if (r.route && r.route.path) {
-    console.log("Registered route:", r.route.path);
-  }
-});
-
 app.use((err, req, res, next) => {
-  res
-    .status(500)
-    .json({
-      message:
-        process.env.NODE_ENV === "production"
-          ? "Internal Server Error"
-          : err.message,
-    });
+  res.status(500).json({
+    message:
+      process.env.NODE_ENV === "production"
+        ? "Internal Server Error"
+        : err.message,
+  });
 });
 
 httpServer.listen(PORT, () => {
   connectionDB();
   console.log(`server is running at ${PORT}`);
 });
-
-
