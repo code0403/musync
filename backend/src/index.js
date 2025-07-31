@@ -31,7 +31,7 @@ intializeSocket(httpServer);
 
 app.use(cors(
   {
-    origin : "http://localhost:3000",
+    origin : process.env.CLIENT_URL || "https://your-frontend.render.com",
     credentials : true
   }
 ))
