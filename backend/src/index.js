@@ -4,6 +4,7 @@ import { clerkMiddleware } from "@clerk/express";
 import fileUpload from "express-fileupload";
 import cors from "cors"
 import { createServer } from "http";
+import cookieParser from 'cookie-parser';
 import fs from "fs";
 import { intializeSocket } from "./lib/socket.js";
 import cron from "node-cron";
@@ -31,11 +32,12 @@ intializeSocket(httpServer);
 app.use(cors(
   {
     origin : "http://localhost:3000",
-    credentials : true,
+    credentials : true
   }
 ))
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.use(clerkMiddleware({
   secretKey: process.env.CLERK_SECRET_KEY,
@@ -81,7 +83,7 @@ app.use("/api/stats", statRoutes);
 
 if(process.env.NODE_ENV === "production"){
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
-  app.get("/*", (req, res) => {
+  app.get(/(.*)/, (req, res) => {
     res.sendFile(path.resolve(__dirname, "../frontend", "dist", "index.html"));
   });
 }

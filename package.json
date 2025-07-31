@@ -5,21 +5,19 @@
   "main": "index.js",
   "scripts": {
     "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
-    "start": "npm start --prefix backend"
+    "start": "npm run start --prefix backend"
   },
-  "repository": {
+  
+  "repository": { 
     "type": "git",
     "url": "git+https://github.com/code0403/musync.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module",
+  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/code0403/musync/issues"
   },
-  "homepage": "https://github.com/code0403/musync#readme",
-  "engines": {
-    "node": "18.x"
-  }
+  "homepage": "https://github.com/code0403/musync#readme"
 }
